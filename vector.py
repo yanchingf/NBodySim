@@ -1,3 +1,5 @@
+#vectors.py
+import math
 
 class Vector:
     def __init__(self, x=0, y=0, z=0):
@@ -50,4 +52,24 @@ class Vector:
             y = self.y * a,
             z = self.z * a
         )
+    
+    def divide(self, a):
+        return Vector(
+            x = self.x / a,
+            y = self.y / a,
+            z = self.z / a
+        )
+
+    def get_magnitude(self):
+        return math.sqrt(self.x**2 + self.y**2 + self.z**2)
+    
+    def normalize(self):
+        m = self.get_magnitude()
+        return Vector(
+            x = self.x / m,
+            y = self.y / m,
+            z = self.z / m
+        )
+
+
 
