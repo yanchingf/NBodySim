@@ -4,6 +4,8 @@ from vector import Vector
 import matplotlib.pyplot as plt
 import math
 
+plt.style.use('dark_background')
+
 class System:
 
     def __init__(self, size):
@@ -20,6 +22,19 @@ class System:
     
     def addBody(self, b):
         self.bodies.append(b)
+
+    def updateBodies(self):
+        for b in self.bodies:
+            b.move()
+            b.draw()
+
+    def drawAll(self):
+        self.axes.set_xlim((-self.size/2, self.size/2))
+        self.axes.set_ylim((-self.size/2, self.size/2))
+        self.axes.set_zlim((-self.size/2, self.size/2))
+
+        plt.pause(0.0001)
+        self.axes.clear()
 
 
 class Body:
@@ -49,14 +64,14 @@ class Body:
     
     def draw(self):
         self.system.axes.plot(
-            self.position,
+            *self.position,
             marker = "o",
             markersize=self.display_size,
-            color=self.color
+            color=self.color,
         )
 
     def __str__(self):
-        return ("Position: ({}, {}, {}) \n Velocity: ({}, {}, {}), \n Mass : {} \n").format(
+        return ("Position: ({}, {}, {}, \n Velocity: ({}, {}, {}), \n Mass : {} \n").format(
             self.position[0], self.position[1], self.position[2],
             self.velocity.getX(), self.velocity.getY(), self.velocity.getZ(),
             self.mass
@@ -65,7 +80,10 @@ class Body:
 
 test = System(400)
 t_body = Body(100, test, velocity=Vector(1, 1, 1))
+test.addBody(t_body)
+
 print(t_body)
-t_body.draw()
-t_body.move()
-print(t_body)
+
+for _ in range(100):
+    test.updateBodies()
+    test.drawAll()
