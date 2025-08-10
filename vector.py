@@ -8,7 +8,7 @@ class Vector:
         self.z = z
 
     def __str__(self):
-        return ("Vector({}, {}, {})".format(self.x,self.y,self.z))
+        return ("Vector({}, {}, {})".format(self.x, self.y, self.z))
 
     def add(self, v2):
         return Vector(
@@ -36,7 +36,7 @@ class Vector:
         )
 
     def get_magnitude(self):
-        return math.sqrt(self.x**2 + self.y**2 + self.z**2)
+        return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
     
     def normalize(self):
         m = self.get_magnitude()

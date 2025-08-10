@@ -7,7 +7,7 @@ import math
 import itertools
 import constants
 
-plt.style.use('dark_background')
+# plt.style.use('dark_background')
 
 class System:
 
@@ -35,18 +35,24 @@ class System:
 
 
     def drawAll(self):
+
         self.axes.set_xlim((-self.size/2, self.size/2))
         self.axes.set_ylim((-self.size/2, self.size/2))
         self.axes.set_zlim((-self.size/2, self.size/2))
-        self.axes.axis(False)
 
-        plt.pause(0.000001)
+        # self.axes.axis(False)
+
+        plt.pause(.0001)
         self.axes.clear()
+
         
 
     def calculateAllInteractions(self):
-        for i in range(len(self.bodies)):
-            for i2 in range(i+1, len(self.bodies)):
+
+        s = len(self.bodies)
+        for i in range(s):
+            for i2 in range(i+1, s):
                 self.bodies[i].accelerate(self.bodies[i2])
+
 
 

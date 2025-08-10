@@ -3,14 +3,16 @@ from vector import Vector
 import matplotlib.pyplot as plt
 import math
 import itertools
-import constants
+from constants import Constants
+
+c = Constants()
 
 class Body:
 
     display_size = 10
     display_log_base = 1.3
 
-    def __init__(self, mass, system, position = (0,0,0), velocity = Vector(0,0,0), color="white"):
+    def __init__(self, mass, system, position = Vector(0,0,0), velocity = Vector(0,0,0), color="white"):
         self.mass = mass
         self.position = position
         self.velocity = velocity
@@ -21,56 +23,50 @@ class Body:
             math.log(self.mass, self.display_log_base),
             self.display_size,
         )
+
+    def pos_as_iter(self):
+        return (self.position.x, self.position.y, self.position.z)
     
     def move(self):
-        self.position =  (
-            self.position[0] + self.velocity.getX(),
-            self.position[1] + self.velocity.getY(),
-            self.position[2] + self.velocity.getZ(),
+        self.position =  Vector(
+            self.position.x + self.velocity.x,
+            self.position.y + self.velocity.y,
+            self.position.z + self.velocity.z
         )
 
     def accelerate(self, b2):
 
-        pos_v1 = Vector(self.position[0],
-                        self.position[1],
-                        self.position[2])
-        
-        pos_v2 = Vector(b2.position[0], 
-                        b2.position[1], 
-                        b2.position[2])
+        distance = self.position.subtract(b2.position)
+        r_sq = distance.get_magnitude() ** 2 + c.bound
 
-
-        distance = pos_v1.subtract(pos_v2)
-
-        print(pos_v1)
-        print(pos_v2)
-
-        print(distance)
-
-        radius_sq = distance.get_magnitude() ** 2
-
-        force_mag = (self.mass * b2.mass) / (radius_sq)
+        force_mag = (self.mass * b2.mass) / (r_sq) 
         force = distance.normalize().multiply(force_mag)
 
-        a1 = force / self.mass
-        a2 = -force / b2.mass
+        a1 = force.divide(self.mass).multiply(c.G)
+        a2 = force.divide(b2.mass).multiply(c.G)
 
-        self.velocity =  a1 
-        b2.velocity += a2
+        self.velocity = self.velocity.add(a1)
+        b2.velocity = b2.velocity.add(a2.multiply(-1))
+
 
     def draw(self):
+        pos_t = self.pos_as_iter()
         self.system.axes.plot(
-            *self.position,
+            pos_t[0],
+            pos_t[1],
+            pos_t[2],
             marker = "o",
             markersize=self.display_size,
             color=self.color,
         )
 
+
     def __str__(self):
-        return ("Position: ({}, {}, {}, \n Velocity: ({}, {}, {}), \n Mass : {} \n").format(
-            self.position[0], self.position[1], self.position[2],
-            self.velocity.getX(), self.velocity.getY(), self.velocity.getZ(),
+        return ("Position: {}, \n Velocity: {}, \n Mass : {} \n").format(
+            self.position,
+            self.velocity,
             self.mass
         )
+    
 
 
