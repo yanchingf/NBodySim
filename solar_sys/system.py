@@ -7,7 +7,7 @@ import math
 import itertools
 import constants
 
-# plt.style.use('dark_background')
+plt.style.use('dark_background')
 
 class System:
 
@@ -19,7 +19,7 @@ class System:
             1,
             1,
             subplot_kw={"projection": "3d"},
-            figsize=(self.size/50, self.size/50),
+            figsize=(self.size / 50, self.size / 50),
         )
         self.fig.tight_layout()
 
@@ -29,6 +29,7 @@ class System:
 
 
     def updateBodies(self):
+        self.bodies.sort(key=lambda item: item.position.x)
         for b in self.bodies:
             b.move()
             b.draw()
@@ -50,9 +51,15 @@ class System:
     def calculateAllInteractions(self):
 
         s = len(self.bodies)
+
         for i in range(s):
-            for i2 in range(i+1, s):
-                self.bodies[i].accelerate(self.bodies[i2])
+            for i2 in range(s):
+                if (i != i2):
+                    self.bodies[i].accelerate(self.bodies[i2])
+                
+
+
+
 
 
 

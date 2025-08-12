@@ -36,8 +36,9 @@ class Body:
 
     def accelerate(self, b2):
 
-        distance = self.position.subtract(b2.position)
-        r_sq = distance.get_magnitude() ** 2 + c.bound
+        distance = b2.position.subtract(self.position).add(Vector(c.bound,c.bound,c.bound))
+
+        r_sq = distance.get_magnitude() ** 2 
 
         force_mag = (self.mass * b2.mass) / (r_sq) 
         force = distance.normalize().multiply(force_mag)
@@ -46,7 +47,9 @@ class Body:
         a2 = force.divide(b2.mass).multiply(c.G)
 
         self.velocity = self.velocity.add(a1)
-        b2.velocity = b2.velocity.add(a2.multiply(-1))
+        b2.velocity = b2.velocity.subtract(a2)
+
+        
 
 
     def draw(self):
