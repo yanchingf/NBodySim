@@ -6,6 +6,7 @@ from constants import Constants
 c = Constants()
 
 class System:
+
     def __init__(self, n=100, m=10):
         self.bodies[n]
 
@@ -20,8 +21,15 @@ class System:
         force = dist.divide(dist_mag).multiply(force_mag)
                 
         # F/m = a
-        self.acceleration = self.acceleration.add(force.divide(other.mass))
-        other.acceleration = self.acceleration.subtract(force.divide(self.mass))
+        self.acceleration = self.acceleration.add(force.divide(self.mass))
+        other.acceleration = self.acceleration.subtract(force.divide(other.mass))
+
+
+    
+            
+
+
+    
 
 
     
