@@ -5,6 +5,8 @@ class Constants:
         self.G = 1
         self.softening = 0.01
 
+        self.bound = 1000
+
         self.dt = 0.05
         
         self.quad_tolerance = 0.5

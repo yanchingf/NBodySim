@@ -8,21 +8,25 @@ class Particle:
 
     def __init__(self, mass = 1, position = Vector(0,0)):
 
-        self.position = position
-        self.prev_position = position.copy()
+        self.pos = position
+        self.prev_position = position
 
         self.velocity = Vector(0,0)
         self.acceleration = Vector(0,0)
 
+        self.net_force = Vector(0,0)
+
         self.mass = mass
 
+
     def move(self):
-        self.position.x += self.velocity.x
-        self.position.y += self.velocity.y
+        self.pos.x += self.velocity.x
+        self.pos.y += self.velocity.y
+
 
     def accelerate(self, b2):
 
-        distance = b2.position.subtract(self.position)
+        distance = b2.pos.subtract(self.pos)
 
         r_sq = distance.get_magnitude() ** 2 
 
